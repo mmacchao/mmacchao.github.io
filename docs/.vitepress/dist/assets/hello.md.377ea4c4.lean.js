@@ -1,0 +1,1 @@
+import{_ as a,o as e,c as h,O as o}from"./chunks/framework.d02fadbd.js";const f=JSON.parse('{"title":"hello world","description":"","frontmatter":{},"headers":[],"relativePath":"hello.md","filePath":"hello.md"}'),l={name:"hello.md"},t=o("",5),r=[t];function d(i,n,s,c,_,u){return e(),h("div",null,r)}const p=a(l,[["render",d]]);export{f as __pageData,p as default};
