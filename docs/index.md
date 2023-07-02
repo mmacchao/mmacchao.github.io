@@ -3,23 +3,23 @@
 layout: home
 
 hero:
-  name: "Hello world"
-  text: "A VitePress Site"
-  tagline: My great project tagline
+  name: "学习旅程"
+  text: "记录个人学习过程"
+#  tagline: My great project tagline
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
-    - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: 文章列表
+      link: /article-list
+#    - theme: alt
+#      text: vue-router学习笔记
+#      link: /vue-router/vue-router.md
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: js
+    details: js熟练工
+  - title: css
+    details: css熟练工
+  - title: vue
+    details: vue熟练工
 ---
 
