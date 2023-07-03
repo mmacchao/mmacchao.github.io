@@ -26,7 +26,7 @@ const sidebar = data.theme.value.sidebar
             <a :href="item.link">{{item.text}}</a>
             {{item.date}}
         </li>
-    </ul>
+    </ul>m 
 </li>
 </ul>
 

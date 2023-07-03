@@ -14,7 +14,8 @@ export default defineConfig({
       { text: '所有文章', link: '/article-list' },
       { text: 'markdown系列', link: '/markdown/markdown-demo', activeMatch: '/markdown/' },
       { text: 'vitepress系列', link: '/vitepress/getstarted', activeMatch: '/vitepress/' },
-      { text: 'vue-router系列', link: '/vue-router/vue-router', activeMatch: '/vue-router/' }
+      { text: 'vue-router系列', link: '/vue-router/vue-router', activeMatch: '/vue-router/' },
+      { text: 'monorepo系列', link: '/monorepo/start', activeMatch: '/monorepo/' }
     ],
 
     sidebar: {
@@ -52,7 +53,15 @@ export default defineConfig({
             { text: 'api练习demo', link: '/vue-router/vue-router',  date: '2023-07-02' },
           ]
         }
-      ]
+      ],
+      '/monorepo/': [
+        {
+          text: '参考',
+          items: [
+            { text: 'monorepo入门', link: '/monorepo/start',  date: '2023-07-03' },
+          ]
+        }
+      ],
     },
 
     socialLinks: [
