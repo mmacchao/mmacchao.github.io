@@ -17,6 +17,7 @@ export default defineConfig({
       { text: 'vue-router系列', link: '/vue-router/vue-router', activeMatch: '/vue-router/' },
       { text: 'monorepo系列', link: '/monorepo/start', activeMatch: '/monorepo/' },
       { text: 'uni-app', link: '/uni-app/start', activeMatch: '/uni-app/' },
+      { text: 'typescript', link: '/ts/start', activeMatch: '/ts/' },
     ],
 
     sidebar: {
@@ -68,6 +69,14 @@ export default defineConfig({
           text: '参考',
           items: [
             { text: 'uni-app入门', link: '/uni-app/start',  date: '2023-07-05' },
+          ]
+        }
+      ],
+      '/ts/': [
+        {
+          text: '参考',
+          items: [
+            { text: 'typescript入门', link: '/ts/start',  date: '2023-07-05' },
           ]
         }
       ],
