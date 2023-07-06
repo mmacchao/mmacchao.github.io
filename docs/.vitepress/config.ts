@@ -18,6 +18,7 @@ export default defineConfig({
       { text: 'monorepo系列', link: '/monorepo/start', activeMatch: '/monorepo/' },
       { text: 'uni-app', link: '/uni-app/start', activeMatch: '/uni-app/' },
       { text: 'typescript', link: '/ts/start', activeMatch: '/ts/' },
+      { text: 'flutter', link: '/flutter/start', activeMatch: '/flutter/' },
     ],
 
     sidebar: {
@@ -77,6 +78,14 @@ export default defineConfig({
           text: '参考',
           items: [
             { text: 'typescript入门', link: '/ts/start',  date: '2023-07-05' },
+          ]
+        }
+      ],
+      '/flutter/': [
+        {
+          text: '参考',
+          items: [
+            { text: 'flutter入门', link: '/flutter/start',  date: '2023-07-06' },
           ]
         }
       ],
