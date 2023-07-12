@@ -3,6 +3,8 @@
 
 typescript就是给js加了类型，文件后缀改成了.ts，然后用tsc将.ts转换为.js，它有一个默认的转换规则，也可以写一个tsconfig.json来配置转换规则
 
+typescript添加类型后可以让我们在代码中少写一些运行时类型判断，避免很多运行时类型错误
+
 ## 简单demo
 1. 新建start.ts文件
 ```ts

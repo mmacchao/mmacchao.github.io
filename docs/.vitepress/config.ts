@@ -78,6 +78,13 @@ export default defineConfig({
           text: '参考',
           items: [
             { text: 'typescript入门', link: '/ts/start',  date: '2023-07-05' },
+            { text: '常见类型', link: '/ts/base',  date: '2023-07-07' },
+            { text: '缩小类型范围', link: '/ts/narrowing',  date: '2023-07-07' },
+            { text: '函数', link: '/ts/fn',  date: '2023-07-07' },
+            { text: '对象', link: '/ts/obj',  date: '2023-07-08' },
+            { text: '类型操作', link: '/ts/type-manipulation',  date: '2023-07-08' },
+            { text: '模块', link: '/ts/module',  date: '2023-07-12' },
+            { text: '声明文件', link: '/ts/declaration-file',  date: '2023-07-12' },
           ]
         }
       ],
