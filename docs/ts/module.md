@@ -42,21 +42,24 @@ const name = createCatName();
 ```
 
 ## 命名空间
-通过namespace定义，有点类似与全局变量里面的某个对象，例如 window.Math，定义在多个文件中的同一个namespace，就像写在同一个文件一样，
-对于一些直接通过script引入的lib，命名空间还是有点用的，而其他情况下推荐用模块而不是命名空间
+一种早期的模块组织形式，等效于创建全局变量，使用时要用script把所有文件引入，或者合并所有编译文件，有了es6的module后就不推荐使用了
 ```ts
 namespace Validation {
   export interface StringValidator {
     isAcceptable(s: string): boolean;
   }
-}
-```
-在一些.d.ts文件中可能会看到这个 
-```ts
-// 这个等效于 declare namespace A {}, 且推荐使用namespace, module是旧版本的用法
-declare module A {
-  interface B {
-    a: string
+  export class A {
+    
   }
 }
+
+// 编译后的文件
+"use strict";
+var Validation;
+(function (Validation) {
+  class A {
+  }
+  Validation.A = A;
+})(Validation || (Validation = {}));
 ```
+多个文件通过``/// <reference path="Validation.ts" />`这种形式引入，有点类似script标签

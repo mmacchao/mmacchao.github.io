@@ -62,6 +62,7 @@ export default defineConfig({
           text: '参考',
           items: [
             { text: 'monorepo入门', link: '/monorepo/start',  date: '2023-07-03' },
+            { text: 'pnpm入门', link: '/monorepo/pnpm入门',  date: '2023-07-12' },
           ]
         }
       ],
@@ -84,7 +85,8 @@ export default defineConfig({
             { text: '对象', link: '/ts/obj',  date: '2023-07-08' },
             { text: '类型操作', link: '/ts/type-manipulation',  date: '2023-07-08' },
             { text: '模块', link: '/ts/module',  date: '2023-07-12' },
-            { text: '声明文件', link: '/ts/declaration-file',  date: '2023-07-12' },
+            { text: '声明文件', link: '/ts/d.ts',  date: '2023-07-12' },
+            { text: '内置类型操作函数', link: '/ts/type-fn',  date: '2023-07-18' },
           ]
         }
       ],
@@ -109,8 +111,5 @@ export default defineConfig({
     outline: {
       label: '当前页'
     }
-
-
-
   }
 })

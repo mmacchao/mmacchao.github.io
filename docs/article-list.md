@@ -23,7 +23,7 @@ nav = nav.concat([
     {text: '重温Promise',  link: 'https://zhuanlan.zhihu.com/p/210148646', date: '2020-12-01'},
     {text: 'async并发、继发、错误处理、顶层await、Promise',  link: 'https://zhuanlan.zhihu.com/p/210148646', date: '2020-09-01'},
     {text: '重温DOM事件流，捕获、冒泡、useCapture、passive',  link: 'https://zhuanlan.zhihu.com/p/203018970', date: '2020-08-28'},
-    {text: 'editconfig介绍', link: 'https://www.jianshu.com/p/1f69633609b0', date: '2019-07-19'},
+    {text: 'editconfig介绍', link: 'https://www.jianshu.com/p/163edebead01', date: '2019-07-19'},
     {text: '由图片下方的3px间隙引出的vertical-align', link: 'https://www.jianshu.com/p/1f69633609b0', date: '2019-07-18'},
     {text: 'requireJs绝对路径与配置路径与相对路径', link: 'https://zhuanlan.zhihu.com/p/28618032', date: '2017-08-19'},
 ])
@@ -34,12 +34,12 @@ nav = nav.concat([
 <ul>
 <li v-for="nav in nav" >
     <div :class="$style.li">
-        <a :href="nav.link">{{nav.text}}</a>
+        <a :href="nav.link" :target="nav.link.startsWith('http') ? '_blank' : '_self'">{{nav.text}}</a>
         {{nav.date}}    
     </div>
     <ul v-if="sidebar[nav.activeMatch]?.length === 1">
         <li v-for="item in sidebar[nav.activeMatch][0].items" :class="$style.li">
-            <a :href="item.link">{{item.text}}</a>
+            <a :href="item.link" >{{item.text}}</a>
             {{item.date}}
         </li>
     </ul>
