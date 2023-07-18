@@ -13,8 +13,8 @@
   参考官方定义文件：[Module: Function](https://www.typescriptlang.org/docs/handbook/declaration-files/templates/module-function-d-ts.html)
 - 扩展npm库中的类型定义 - 新建一个任意命名的.d.ts文件，放在项目任意目录中，tsconfig.json中没有配置相关路径的话，默认加载项目所有.d.ts文件
   ```ts
-  // 扩展axios，需要先引入axios，不引入的话默认是覆盖axios的配置
-  import 'axios' 
+  // 扩展axios，需要有个import或者export语句，这样才是定义模块类型，没有的话就是定义全局类型，会导致覆盖掉npm中的类型定义
+  export {}
   declare module 'axios' {
     // 模块内的接口声明会自动合并
     interface AxiosRequestConfig {
