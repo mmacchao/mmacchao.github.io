@@ -2,12 +2,13 @@
 aside: false
 ---
 
-<script setup>
-import { useData } from 'vitepress'
+<script setup lang="ts">
+import { useData, UserConfig, VitePressData } from 'vitepress';
+import { DefaultTheme } from "vitepress"; 
 
-const data = useData()
-let nav = data.theme.value.nav.slice(2)
-const sidebar = data.theme.value.sidebar
+const data: VitePressData = useData()
+let nav: DefaultTheme.NavItem[] = data.theme.value.nav.slice(2)
+const sidebar: DefaultTheme.Sidebar = data.theme.value.sidebar
 nav = nav.concat([
     {text: '记录一次vue2项目升级vue3项目的过程', link: 'https://juejin.cn/post/7246940748167643196', date: '2023-06-21'},
     {text: 'mini-vue学习笔记', link: 'https://juejin.cn/post/7243680440694865980', date: '2023-06-12'},
