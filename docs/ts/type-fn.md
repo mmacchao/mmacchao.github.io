@@ -6,8 +6,8 @@
 - Record\<Keys, Type\> // 构建复杂对象类型
 - Pick\<Type, Keys\> // 保留指定属性
 - Omit\<Type, Keys\> // 删除指定属性
-- Exclude\<UnionType, ExcludedMembers\> // 没有ExcludedMembers时，就是删除重复的类型，有ExcludedMembers时就是移除指定的属性
-- Extract\<Type, Union\> // 与exclude相反，保留重复的，或者保留指定的
+- Exclude\<UnionType, ExcludedMembers\> // 移除指定的类型
+- Extract\<Type, Union\> // 与exclude相反 保留指定的
 - NonNullable\<Type\> // 删除null和undefined
 - Parameters\<Type\> // 从函数类型的参数中获取元组类型
 - ConstructorParameters\<Type\> // 从构造函数的参数中获取元组类型

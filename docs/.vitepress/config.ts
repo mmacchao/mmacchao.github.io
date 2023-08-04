@@ -19,6 +19,7 @@ export default defineConfig({
       { text: 'uni-app', link: '/uni-app/start', activeMatch: '/uni-app/' },
       { text: 'typescript', link: '/ts/start', activeMatch: '/ts/' },
       { text: 'flutter', link: '/flutter/start', activeMatch: '/flutter/' },
+      { text: 'other', link: '/daily/内存优化/memory', activeMatch: '/daily/' },
     ],
 
     sidebar: {
@@ -87,6 +88,7 @@ export default defineConfig({
             { text: '模块', link: '/ts/module',  date: '2023-07-12' },
             { text: '声明文件', link: '/ts/d.ts',  date: '2023-07-12' },
             { text: '内置类型操作函数', link: '/ts/type-fn',  date: '2023-07-18' },
+            { text: '类型体操', link: '/ts/类型体操',  date: '2023-08-04' },
           ]
         }
       ],
@@ -95,6 +97,14 @@ export default defineConfig({
           text: '参考',
           items: [
             { text: 'flutter入门', link: '/flutter/start',  date: '2023-07-06' },
+          ]
+        }
+      ],
+      '/daily/': [
+        {
+          text: '参考',
+          items: [
+            { text: '内存优化', link: '/daily/内存优化/memory',  date: '2023-07-29' },
           ]
         }
       ],

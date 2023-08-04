@@ -4,7 +4,7 @@
 参考：[JavaScript 和 TypeScript 交叉口 —— 类型定义文件(*.d.ts)](https://juejin.cn/post/6844903508987265038)
 
 ## 简介
-为了给js文件添加类型，以及给第三方库扩展类型，typescript推出了.d.ts文件类型，当你引入一个js文件时，tsc会自动寻找同目录下同名的.d.ts文件，用于静态类型分析，
+为了给js文件添加类型，以及给第三方库扩展类型，typescript推出了.d.ts文件类型，这里面是不能有具体实现的。当你引入一个js文件时，tsc会自动寻找同目录下同名的.d.ts文件，用于静态类型分析，
 当然你没有这个.d.ts文件，tsc也不会有啥异常，但ts的核心功能——静态类型判断，就没了
 
 ## 常见应用
@@ -24,11 +24,19 @@
   ```
 
 ## 全局定义文件
+全局定义就是给全局变量添加类型定义，全局变量的使用是不需要导入的
+
 如果在.d.ts文件中没有任何的import, export语句, 那么所有的declare定义都被认为是全局定义，比如你没有安装@types/jquery，
 那么如何手动添加jquery的类型定义，如下: 添加一个.d.ts文件，放在项目任意目录下
 ```ts
 // global.d.ts
 declare function $(selector: string): {html(str: string): void}
+```
+如何在有import，export语句的文件中定义全局类型呢？
+```ts
+declare global {
+  declare function funA(): void;
+}
 ```
 
 ## .d.ts文件的查找
