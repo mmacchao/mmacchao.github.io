@@ -120,6 +120,8 @@ export default defineConfig({
           text: '参考',
           items: [
             { text: '前端基建', link: '/前端基建/start',  date: '2023-08-05' } as SidebarItem2,
+            { text: 'prettier', link: '/前端基建/prettier',  date: '2023-08-11' } as SidebarItem2,
+            { text: 'eslint', link: '/前端基建/eslint',  date: '2023-08-11' } as SidebarItem2,
           ]
         }
       ],
