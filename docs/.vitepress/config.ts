@@ -25,8 +25,12 @@ export default defineConfig({
       { text: 'uni-app', link: '/uni-app/start', activeMatch: '/uni-app/' },
       { text: 'typescript', link: '/ts/start', activeMatch: '/ts/' },
       { text: 'flutter', link: '/flutter/start', activeMatch: '/flutter/' },
-      { text: 'other', link: '/daily/内存优化/memory', activeMatch: '/daily/' },
       { text: '前端基建', link: '/前端基建/start', activeMatch: '/前端基建/' },
+      {
+        text: '其他', items: [
+          {text: '日常开发', link: '/daily/内存优化/memory', activeMatch: '/daily/'},
+          {text: '浏览器相关', link: '/浏览器相关/cache', activeMatch: '/浏览器相关/'},
+        ] },
     ],
 
     sidebar: {
@@ -122,6 +126,14 @@ export default defineConfig({
             { text: '前端基建', link: '/前端基建/start',  date: '2023-08-05' } as SidebarItem2,
             { text: 'prettier', link: '/前端基建/prettier',  date: '2023-08-11' } as SidebarItem2,
             { text: 'eslint', link: '/前端基建/eslint',  date: '2023-08-11' } as SidebarItem2,
+          ]
+        }
+      ],
+      '/浏览器相关/': [
+        {
+          text: '参考',
+          items: [
+            { text: '前端缓存介绍', link: '/浏览器相关/cache',  date: '2023-08-12' } as SidebarItem2,
           ]
         }
       ],
