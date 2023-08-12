@@ -4,7 +4,7 @@
 export {}
 declare module 'axios' {
   interface InternalAxiosRequestConfig {
-    showLoading: boolean,
-    abc(): void,
+    showLoading: boolean
+    abc(): void
   }
 }

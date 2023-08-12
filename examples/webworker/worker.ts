@@ -4,7 +4,7 @@ function add(a: number, b: number) {
 }
 
 self.addEventListener('message', (e) => {
-  const {data} = e
+  const { data } = e
   self.postMessage(add(data.a, data.b))
-  self.postMessage(add2(data.a+1, data.b))
+  self.postMessage(add2(data.a + 1, data.b))
 })

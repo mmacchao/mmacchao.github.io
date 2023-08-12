@@ -1,50 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-  <script src="https://cdn.jsdelivr.net/npm/handsontable@13.0/dist/handsontable.full.min.js"></script>
-  <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@13.0/dist/handsontable.full.min.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/handsontable@13.0/dist/handsontable.full.min.js"></script>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/handsontable@13.0/dist/handsontable.full.min.css"
+    />
 
-  <div id="example5" class="hot"></div>
-</head>
-<body>
-<script>
-function customRenderer(hotInstance, td, row, column, prop, value, cellProperties) {
-  // Optionally include `BaseRenderer` which is responsible for
-  // adding/removing CSS classes to/from the table cells.
-  console.log('custom render')
-  Handsontable.renderers.BaseRenderer.apply(this, arguments);
+    <div id="example5" class="hot"></div>
+  </head>
+  <body>
+    <script>
+      function customRenderer(hotInstance, td, row, column, prop, value, cellProperties) {
+        // Optionally include `BaseRenderer` which is responsible for
+        // adding/removing CSS classes to/from the table cells.
+        console.log('custom render')
+        Handsontable.renderers.BaseRenderer.apply(this, arguments)
 
-  // ...your custom logic of the renderer
-}
+        // ...your custom logic of the renderer
+      }
 
-// Register an alias
-Handsontable.renderers.registerRenderer('my.custom', customRenderer);
-const container = document.querySelector('#example5');
-const data = [
-  { id: 1, name: {first: 'Ted', last: 'Right'}, address: '' },
-  { id: 2, address: '' }, // Handsontable will create missing properties on demand
-  { id: 3, name: {first: 'Joan', last: 'Well'}, address: '' }
-];
+      // Register an alias
+      Handsontable.renderers.registerRenderer('my.custom', customRenderer)
+      const container = document.querySelector('#example5')
+      const data = [
+        { id: 1, name: { first: 'Ted', last: 'Right' }, address: '' },
+        { id: 2, address: '' }, // Handsontable will create missing properties on demand
+        { id: 3, name: { first: 'Joan', last: 'Well' }, address: '' },
+      ]
 
-const hot = new Handsontable(container, {
-  colHeaders: true,
-  rowHeaders: true,
-  height: 'auto',
-  width: 'auto',
-  data: [
-    {a1: 1, a2: 1},
-    {a1: 2, a2: 2},
-  ],
-  columns: [
-    {renderer: 'numeric', data: 'a1'},
-    {renderer: 'my.custom', data: 'a2'},
-  ],
-  // minSpareRows: 1,
-  licenseKey: 'non-commercial-and-evaluation'
-});
-
-</script>
-</body>
+      const hot = new Handsontable(container, {
+        colHeaders: true,
+        rowHeaders: true,
+        height: 'auto',
+        width: 'auto',
+        data: [
+          { a1: 1, a2: 1 },
+          { a1: 2, a2: 2 },
+        ],
+        columns: [
+          { renderer: 'numeric', data: 'a1' },
+          { renderer: 'my.custom', data: 'a2' },
+        ],
+        // minSpareRows: 1,
+        licenseKey: 'non-commercial-and-evaluation',
+      })
+    </script>
+  </body>
 </html>

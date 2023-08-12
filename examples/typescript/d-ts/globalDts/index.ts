@@ -1,13 +1,10 @@
 type a = MyGlobalClass
 $('#app').html('<p>你好，.d.ts</p>')
-console.log(myGlobalVariable);
+console.log(myGlobalVariable)
 
-myGlobalFunction();
+myGlobalFunction()
 
-console.log(myGlobalObject.prop);
+console.log(myGlobalObject.prop)
 
-const myObject = new MyGlobalClass('John');
-myObject.sayHello();
-
-
-
+const myObject = new MyGlobalClass('John')
+myObject.sayHello()

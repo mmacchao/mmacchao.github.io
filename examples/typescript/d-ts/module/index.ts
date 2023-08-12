@@ -1,5 +1,5 @@
 import a from './moduleA/a.js'
-import {b} from './moduleB'
+import { b } from './moduleB'
 import c = require('./moduleC')
 a.log('123')
 

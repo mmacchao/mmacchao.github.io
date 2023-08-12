@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES5",
-//    "allowJs": true,
-//    "checkJs": true,
+    //    "allowJs": true,
+    //    "checkJs": true,
     "outDir": "build",
     "skipLibCheck": true,
     "moduleResolution": "Node"
-  },
-//  "include": ["**/*"]
+  }
+  //  "include": ["**/*"]
 }

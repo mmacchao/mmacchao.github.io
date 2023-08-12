@@ -1,17 +1,16 @@
 // global.d.ts
 
-declare var myGlobalVariable: string;
+declare var myGlobalVariable: string
 
-declare function myGlobalFunction(): void;
+declare function myGlobalFunction(): void
 
 declare namespace myGlobalObject {
-  const prop: number;
+  const prop: number
 }
 
 declare class MyGlobalClass {
-  constructor(name: string);
-  sayHello(): void;
+  constructor(name: string)
+  sayHello(): void
 }
 
-declare function $(selector: string): {html(str: string): void}
-
+declare function $(selector: string): { html(str: string): void }

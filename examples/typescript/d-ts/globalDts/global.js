@@ -1,4 +1,4 @@
-var myGlobalVariable = 'myGlobalVariable';
+var myGlobalVariable = 'myGlobalVariable'
 
 function myGlobalFunction() {
   return ''
@@ -11,8 +11,6 @@ var myGlobalObject = {
 class MyGlobalClass {
   constructor(name) {
     this.name = name
-  };
-  sayHello() {
-
   }
+  sayHello() {}
 }

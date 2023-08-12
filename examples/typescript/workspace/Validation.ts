@@ -1,5 +1,5 @@
 namespace Validation {
   export interface StringValidator {
-    isAcceptable(s: string): boolean;
+    isAcceptable(s: string): boolean
   }
 }
