@@ -7,7 +7,19 @@ import { useData, UserConfig, VitePressData } from 'vitepress';
 import { DefaultTheme } from "vitepress"; 
 
 const data: VitePressData = useData()
-let nav: DefaultTheme.NavItem[] = data.theme.value.nav.slice(2)
+// 顶部导航
+let originNav: DefaultTheme.NavItem[] = data.theme.value.nav.slice(2)
+let nav = []
+originNav.forEach(item => {
+  if(item.items?.length) {
+    nav = nav.concat(item.items)
+  } else {
+    nav.push(item)
+  }
+})
+
+
+// 具体路径的侧边目录
 const sidebar: DefaultTheme.Sidebar = data.theme.value.sidebar
 nav = nav.concat([
     {text: '记录一次vue2项目升级vue3项目的过程', link: 'https://juejin.cn/post/7246940748167643196', date: '2023-06-21'},
