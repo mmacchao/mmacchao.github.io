@@ -17,19 +17,20 @@ export default defineConfig({
     nav: [
       { text: '主页', link: '/' },
       { text: '所有文章', link: '/article-list' },
+      { text: 'JavaScript系列', link: '/JavaScript系列/start', activeMatch: '/JavaScript系列/' },
+      { text: '前端基建', link: '/前端基建/start', activeMatch: '/前端基建/' },
+      { text: 'typescript', link: '/ts/start', activeMatch: '/ts/' },
+      { text: 'vue-router系列', link: '/vue-router/vue-router', activeMatch: '/vue-router/' },
       { text: 'markdown系列', link: '/markdown/markdown-demo', activeMatch: '/markdown/' },
       { text: 'vitepress系列', link: '/vitepress/getstarted', activeMatch: '/vitepress/' },
-      { text: 'vue-router系列', link: '/vue-router/vue-router', activeMatch: '/vue-router/' },
       { text: 'monorepo系列', link: '/monorepo/start', activeMatch: '/monorepo/' },
       { text: 'uni-app', link: '/uni-app/start', activeMatch: '/uni-app/' },
-      { text: 'typescript', link: '/ts/start', activeMatch: '/ts/' },
-      { text: 'flutter', link: '/flutter/start', activeMatch: '/flutter/' },
-      { text: '前端基建', link: '/前端基建/start', activeMatch: '/前端基建/' },
       {
         text: '其他',
         items: [
           { text: '日常开发', link: '/daily/内存优化/memory', activeMatch: '/daily/' },
           { text: '浏览器相关', link: '/浏览器相关/cache', activeMatch: '/浏览器相关/' },
+          { text: 'flutter', link: '/flutter/start', activeMatch: '/flutter/' },
         ],
       },
     ],
@@ -61,6 +62,18 @@ export default defineConfig({
               text: 'vitepress md语法',
               link: '/markdown/markdown-examples',
               date: '2023-07-02',
+            } as SidebarItem2,
+          ],
+        },
+      ],
+      '/JavaScript系列/': [
+        {
+          text: '参考',
+          items: [
+            {
+              text: '严格模式介绍',
+              link: '/JavaScript系列/start',
+              date: '2023-08-13',
             } as SidebarItem2,
           ],
         },
