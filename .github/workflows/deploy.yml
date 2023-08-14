@@ -21,9 +21,9 @@ jobs:
         with:
           node-version: 16
           cache: npm
-      - run: npm ci
+      - run: pnpm ci
       - name: Build
-        run: npm run build
+        run: pnpm build
       - uses: actions/configure-pages@v2
       - uses: actions/upload-pages-artifact@v1
         with:
