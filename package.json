@@ -2,7 +2,8 @@
   "scripts": {
     "dev": "vitepress dev docs",
     "build": "vitepress build docs",
-    "preview": "vitepress preview docs"
+    "preview": "vitepress preview docs",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "husky": "^8.0.3",
