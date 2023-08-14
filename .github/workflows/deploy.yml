@@ -15,13 +15,19 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v3
+        name: checkout
         with:
           fetch-depth: 0
       - uses: actions/setup-node@v3
+        name: install node.js
         with:
           node-version: 16
           cache: npm
-      - run: pnpm ci
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 7
+          run_install: false
       - name: Build
         run: pnpm build
       - uses: actions/configure-pages@v2
