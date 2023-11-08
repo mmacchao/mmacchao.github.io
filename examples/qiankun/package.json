@@ -1,0 +1,16 @@
+{
+  "name": "qiankun",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "qiankun": "^2.10.15",
+    "single-spa": "^5.9.5"
+  }
+}

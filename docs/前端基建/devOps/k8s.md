@@ -2,7 +2,7 @@
  * @Author: mazca z867982005@163.com
  * @Date: 2023-11-06 08:25:52
  * @LastEditors: mazca z867982005@163.com
- * @LastEditTime: 2023-11-06 16:26:55
+ * @LastEditTime: 2023-11-06 16:29:57
  * @FilePath: \mmacchao.github.io\docs\前端基建\devOps\k8s.md
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -16,7 +16,7 @@
 
 [手把手带你玩转k8s-win10上搭建k8s集群](https://juejin.cn/post/6856407118669742094?searchId=202311061018198200ADBF3F5782B9AB7C)
 
-[k8s从入门到放弃(1)：介绍&上手](https://juejin.cn/post/6844903792882761741)
+【推荐】：[k8s从入门到放弃(1)：介绍&上手](https://juejin.cn/post/6844903792882761741)
 
 ## 环境准备
 - docker安装，可以直接安装docker desktop

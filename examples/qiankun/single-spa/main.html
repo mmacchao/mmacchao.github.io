@@ -1,0 +1,36 @@
+<!--
+ * @Author: mazca z867982005@163.com
+ * @Date: 2023-11-07 08:59:01
+ * @LastEditors: mazca z867982005@163.com
+ * @LastEditTime: 2023-11-07 14:28:37
+ * @FilePath: \mmacchao.github.io\examples\qiankun\index.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE=mo
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>header</div>
+    <div style="display: flex">
+      <aside style="width: 220px">
+        侧边栏
+        <ul style="cursor: pointer">
+          <li onclick="push('/app1')">打开jquery子应用</li>
+          <li onclick="push('/vue')">打开vue应用</li>
+        </ul>
+      </aside>
+      <div id="sub-container">子应用</div>
+    </div>
+
+    <script src="main.js" type="module"></script>
+    <script>
+      function push(subapp) {
+        history.pushState(null, subapp, subapp)
+      }
+    </script>
+  </body>
+</html>
