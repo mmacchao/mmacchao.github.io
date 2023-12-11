@@ -15,6 +15,8 @@
 
 [为什么会需要Docker？](https://www.zhihu.com/question/621025546/answer/3203496233)
 
+[docker安装Ubuntu以及ssh连接](https://www.cnblogs.com/mengw/p/11413461.html)
+
 ## Docker解决了什么问题
 没有docker时服务迁移可能运行不正常，配置一样，有可能操作系统不一样导致出问题，为解决操作系统一致性问题可以考虑用虚拟机安装同样的操作系统，但是硬件浪费大，且启动慢，docker帮你处理了操作系统的问题
 

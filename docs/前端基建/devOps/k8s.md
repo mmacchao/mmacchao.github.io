@@ -58,15 +58,74 @@ curl http://localhost:8001/api/v1/namespaces/default/pods/hello-node-7b78d97f55-
 # 获取deployment
 kubectl get deployment
 
-# 创建service
+# 创建service，指定代理内部8080端口，本地访问端口会在service起动后随机生成
 kubectl expose deployment hello-node --type=LoadBalancer --port=8080
 
 # 查看service
 kubectl get service
 
-# minikube启动一个代理访问service
+# minikube启动一个代理访问service，正常k8s创建了service后就可以直接访问了，minikube需要再运行下service
 minikube service hello-node
 ```
+
+## k8s部署nginx并能访问
+现在集群中创建secret用于访问harbor
+```shell
+# docker-server不要用localhost或者127.0.0.1，ifconfig 找到eth0对应的ip
+kubectl create secret docker-registry harbor-secret-local --docker-server=172.22.109.126 --docker-username=admin --docker-password=Harbor12345
+```
+
+创建deployment和service
+
+这一步有个坑，如果你的harbor只启用了http，那这一步image下载不下来，默认会走https去下载，需要配置下minikube [参考](https://minikube.sigs.k8s.io/docs/handbook/registry/#enabling-insecure-registries)
+```shell
+# minikube配置指定镜像仓库用http去下载
+minikube delete # 先删除现有仓库，这一步不能省
+minikube start --insecure-registry=172.22.109.126
+```
+
+deployment.yml
+```shell
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: 172.22.109.126/my-rep/nginx:1.0.0
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: harbor-secret # 对应前面创建的secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30080
+  type: NodePort
+```
+
+## todo
+了解KubeSphere
+学习k8s配置文件
 
 
 
