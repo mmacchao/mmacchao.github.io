@@ -297,27 +297,36 @@ spec:
 Jenkinsfile
 ```shell
 
-def HARBOR_URL = '你的ubuntu ip'
+def HARBOR_URL = '172.22.109.126'
 // podTemplate用法是kubernetes plugins提供的，也可以用配置式语法，都差不多，kubernetes plugins官网能看到各种用法
 // 
 podTemplate(volumes: [
         // 挂载主机的docker，然后可以使用docker命令，类似于win上的快捷方式，不过这一步要用前面自己构建的容器，否则默认的启动用户没有访问docker.sock的权限
-        hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
-        hostPathVolume(mountPath: '/usr/bin/docker', hostPath: '/usr/bin/docker')
-        // 或者配置 runAsUser: '0'也行
+        hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'), 
+        hostPathVolume(mountPath: '/usr/bin/docker', hostPath: '/usr/bin/docker'),
+        hostPathVolume(mountPath: '/home/jenkins/agent/.pnpm-store', hostPath: '/root/.local/share/pnpm/'), // 挂载pnpm的全局存储库，减小pnpm安装包的时间，这一步如果有问题也可以去除
+        
     ], 
-     // 配置容器信息，自己构建容器，加入了kubectl和使用root用户
+    // 或者配置 runAsUser: '0'也可以启用root用户
+    // 配置容器信息，自己构建容器，加入了kubectl和使用root用户
     containers: [
         containerTemplate(
             name: "jnlp",
             image: "${HARBOR_URL}/my-rep/agent1:latest"
         ),
+        containerTemplate(name: "nodejs", image: "node:18-alpine", command: 'sleep', args: '99d') // 要加上sleep命令，否则container启动后自动关闭，没搞懂为啥
     ]) {
     node(POD_LABEL) {
         
-        // 拉取代码
+        // 拉取代码并打包
         stage("clone") {
            git credentialsId: 'gitee', url: 'https://gitee.com/mazca/test-jenkins.git'
+           container("nodejs") {
+                sh '''npm install -g pnpm@7 
+                    pnpm i
+                    pnpm build
+                '''
+            }
         }
 
         // 构建镜像
