@@ -1,7 +1,8 @@
-# k8s + jenkins部署应用
-这里的k8s有两层意义，第一层就是把jenkins的agent部署到k8s里面，以实现各种一次性的独立的构建环境，第二层意义是把项目代码部署到k8s里面
+# k8s + jenkins + kubeSphere部署应用
 
-前面走了一遍手动构建镜像，然后手动push pull镜像到自建仓库，再手动部署镜像到minikube，现在用jenkins把这些步骤都自动化
+参考：[Jenkins+k8s实现自动化部署](https://juejin.cn/post/6963466680613896206)
+
+这里的k8s有两层意义，第一层就是把jenkins的agent部署到k8s里面，以实现各种一次性的独立的构建环境，第二层意义是把项目代码部署到k8s里面
 
 说明：以下的操作是在win11专业版上进行的，安装wsl2，在win上面用linux，jenkins直接安装在linux里面
 
@@ -127,10 +128,14 @@ http:
 # 安装好后执行，这一步依赖docker，会下载相关镜像生成一个minikube container
 # insecure的意思是允许以http的形式访问本地harbor，前面harbor不是图简单直接把https注释了吗
 minikube start --driver=docker --insecure-registry=linux的ip地址
+
+# 启动k8s 控制台，便捷操作deployment, pod的查看删除操作
+nohup minikube dashboard &
+tail nohup.out # 打开日志，ctrl + 点击对应链接可在浏览器打开对应的dashboard
 ```
 
 ### 启动harbor
-再走一遍 ./install的安装步骤，就能启动了，目前没整明白为啥harbor没有自动启动
+再执行一遍前面的harbor安装步骤涉及的install.sh文件即可，就能启动了，目前没整明白为啥harbor没有在系统重启后随docker自动启动
 
 访问localhost，输入默认用户名 “admin” 默认密码 “Harbor12345”，创建仓库
 
@@ -191,7 +196,9 @@ kubectl describe secret sa-secret
 #token:      eyJhbGciOiJSUzI1NiIsImtpZCI6InNFNTdsTTBMSnUyQWNLNU4tLXl2S1Q0aDdzYm1USnFZWGtlbTRTdWhrZ00ifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6InNhLXNlY3JldCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiZTUyMTAyMDAtMGFhMS00Mjc2LWE4N2QtMjVhNTdkNjdlOTRkIiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50OmRlZmF1bHQ6ZGVmYXVsdCJ9.TrL5U-3GeYW5DORcG6Rk7CC2pGa0AO_pZ8O1Ia7vIKxiZq1STvQyewtJiBSUcpKPUmsTe60uWLR6_1MY3-7EESGx3G-XUIRtF9Bt5HGEnhfZn6-BGP0brXYQXhfMcssQdePYroO9N9N3LQnyMroCHyCFhamU_-gIKNgotLiE8xO-kA5v6FFgK3rzohex-qQyOEJRDoaIESvo-FlxDu2Ai8KXsTvd0wKTG1s-C5XtgUPczJuHUW8bHepuwimUsvtB4vI_XoygaeicOT_uajd9Hh5tVeX4pzl_vwSolrH-dVwEGjUCoEVp6-wDjs5ox0GEz4tFvQzIcL8pFbjPHuOibw
 ```
 
-创建cloud，创建即可，后续的kubernetes plugin的podTemplate不指定cloud会自动使用这个
+**创建cloud，即指定连接哪个k8s集群**
+
+创建即可，后续的kubernetes plugin的podTemplate如果不指定cloud会自动使用这个（猜的）
 
 系统管理 -> clouds -> new cloud，填入名称k8s，选择kubernetes，如果没有这个选项也许你还没安装kubernetes plugin
 ```yaml
@@ -202,14 +209,14 @@ kubectl cluster-info
 
 # 3. 凭据选择前面创建的sa-secret然后连接测试，通过了表示可以连接到k8s cluster,即后续的jenkins agent可以部署到k8s上
 
-# 4.Jenkins 地址： 不填就会用jenkins系统配置里面的地址，填的话不要用localhost或者127
+# 4.Jenkins 地址： 不填就会用jenkins系统配置里面的地址，填的话不要用localhost或者127，要用本地真实ip
 #   Jenkins 通道不用填
 # 保存即可
 ```
 
 ### 构建集成kubectl和使用root用户的jenkins agent镜像
 
-构建自己的agent镜像
+构建自己的agent镜像，因为用默认镜像的话是使用不了kubectl命令的，而尝试挂载host中的kubectl又失败了，所以自己打包一个安装了kubectl的版本
 ```Dockerfile
 # 这个版本应该是随意的，我写这个是前面使用过程中发现我安装的kubernets plugins自动用的这个版本，也可以用最新版吧
 FROM jenkins/inbound-agent:3192.v713e3b_039fb_e-1
@@ -297,8 +304,8 @@ spec:
 Jenkinsfile
 ```shell
 
-def HARBOR_URL = '172.22.109.126'
-// podTemplate用法是kubernetes plugins提供的，也可以用配置式语法，都差不多，kubernetes plugins官网能看到各种用法
+def HARBOR_URL = '你的ubuntu IP'
+// podTemplate用法是kubernetes plugins提供的，也可以用声明式语法，都差不多，kubernetes plugins官网能看到各种用法
 // 
 podTemplate(volumes: [
         // 挂载主机的docker，然后可以使用docker命令，类似于win上的快捷方式，不过这一步要用前面自己构建的容器，否则默认的启动用户没有访问docker.sock的权限
@@ -320,7 +327,7 @@ podTemplate(volumes: [
         
         // 拉取代码并打包
         stage("clone") {
-           git credentialsId: 'gitee', url: 'https://gitee.com/mazca/test-jenkins.git'
+           git credentialsId: 'gitee', url: 'https://gitee.com/xxx/test-jenkins.git'
            container("nodejs") {
                 sh '''npm install -g pnpm@7 
                     pnpm i
@@ -361,7 +368,7 @@ podTemplate(volumes: [
                     sh "sed -i 's/IMAGE_PATH/${image_name}/g' deployment.yml"
                     echo "部署app"
                     sh "kubectl apply -f deployment.yml"
-                    echo "部署结束，可以通过执行minikube service nginx-service得到一个可访问的地址"
+                    echo "部署结束，可以通过执行minikube service nginx-service得到一个可访问的地址，driver是docker且是wsl或win环境，NodePort类型的service的IP并不能直接被访问到，所以minikube提供了service命令"
                     
                 }
             }
@@ -370,9 +377,49 @@ podTemplate(volumes: [
 }
 ```
 
-## todo
-- 添加nodejs环境
-- 介绍了解KubeSphere
+## 一些重要概念
+- jenkins master: 类型于一台主机，可以直接在上面运行任务，官方建议把master设置为禁止执行任务，只做控制用
+- jenkins agent：类似于一个只干活的主机，上面会运行jenkins的一个agent.jar，然后与master连接，master给它分配任务。然后这个agent可以直接其他主机上创建，也可以由k8s帮忙创建，而如果是k8s创建，就需要kubernetes plugins，按最基本的配置的话，它会生成一个名称为jnlp的container，用于执行任务以及和master连接通信，所以如果自己完全写k8s的配置的话也要写一个name为jnlp的container,同时里面要包含agent.jar的功能，那么直接用agent官方镜像或者集成官方镜像即可
+
+## 过程中遇到的坑
+### 网络问题
+有镜像下载不下来的情况；有连不上docker deamon的情况；minikube start下载镜像贼慢还有可能失败；有连不上k8s cluster的情况；有连不上jenkins master的情况
+
+解决办法：魔法是必须的，不仅win要魔法，还得开个tun mode给wsl也来个魔法，其次最好有个队友一起搞，这样能知道一些网络问题是哪配置出错了还是就是网慢
+
+### linux权限问题
+多次出现各种权限问题，最典型的报错 permission denies，这个推荐没有linux基础的花1h看看linux用户、用户组、文件权限相关的内容， 推荐鸟哥相关linux文章
+
+[使用者与群组](http://cn.linux.vbird.org/linux_basic/0210filepermission_1.php)
+
+[Linux文件权限概念](http://cn.linux.vbird.org/linux_basic/0210filepermission_2.php)
+
+[极重要！权限与命令间的关系：](http://cn.linux.vbird.org/linux_basic/0220filemanager_6.php)
+
+
+## KubeSphere介绍
+kubeSphere就是比k8s dashboard功能更加丰富，同时它还有很多其他功能，比如集成了jenkins的pipeline，下文主要介绍怎么使用kubesphere的devops功能。kubesphere安装了devops后
+会生成jenkins master Pod，当使用pipeline功能时，会自动创建jenkins agent Pod，当然也可以自定义agent
+
+### kubesphere安装及devops安装和使用
+[在k8s中安装kubesphere](https://v2-1.docs.kubesphere.io/docs/zh-CN/installation/prerequisites/)
+
+参照官网安装，装好后怎么都登录不了，最后发现是k8s版本太高导致，其实官网有说明只支持到k8s指定版本，没仔细看，反而花了巨多时间搜索登录页面的报错
+
+[安装KubeSphere DevOps 系统](https://v2-1.docs.kubesphere.io/docs/zh-CN/installation/install-devops/)
+
+然后坑又来了，devops插件怎么都装不上，最后尝试安装2.1的kubesphere版本，devops总算ok了
+
+降kubesphere版本过程中，又涉及helm降版本安装，镜像拉不下来，参考[解决k8s helm安装tiller出现ImagePullBackOff，ErrImagePull错误](https://blog.csdn.net/zhangjm123/article/details/112544209)解决了
+
+然后就是创建devops项目，创建流水线。可以直接复制Jenkinsfile。甚至可以直接用浏览器访问内部的jenkins，默认的service是ks-jenkins，找到其暴露的端口号即可，登录后能看到，kubesphere只是把流水线配置直接放在了pipline里面。
+那么用kubesphere作为devops的优势在哪呢，也许是它简化了jenkins的各种插件的复杂配置？
+
+反正我最后是没有用kubesphere完成过构建，可能是版本太低了，前面手动写的Jenkinsfile放进去执行各种报错，最终放弃。
+
+## 最后
+以上都是一些最简单的入门，很多总结是自己根据实践猜测的，并没有深入原理，还有很多概念不清不楚，因此可能会有很多错误，还请自行甄别。写这个的目的只是为了让自己了解下CI的工具集，并不打算深入。
+
 
 
 

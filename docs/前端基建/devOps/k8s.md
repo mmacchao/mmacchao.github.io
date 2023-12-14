@@ -39,7 +39,7 @@ kubectl create deployment hello-node --image=opsdockerimage/e2e-test-images-agnh
 ```
 至此，官网中的你好，minikube总算ok了
 
-**内部访问应用**
+**进入pod内部**
 ```shell
 # 进入pod，并打开控制台
 kubectl exec -ti <your-pod-name>  -- /bin/sh
@@ -64,7 +64,8 @@ kubectl expose deployment hello-node --type=LoadBalancer --port=8080
 # 查看service
 kubectl get service
 
-# minikube启动一个代理访问service，正常k8s创建了service后就可以直接访问了，minikube需要再运行下service
+# minikube启动一个代理访问service，正常k8s创建了service后就可以直接访问了，但是如果是driver用的docker且是在wsl或者win环境，则不能直接访问，因此minikube提供了service命令
+# 详细介绍参考 https://minikube.sigs.k8s.io/docs/handbook/accessing/#using-minikube-service-with-tunnel
 minikube service hello-node
 ```
 

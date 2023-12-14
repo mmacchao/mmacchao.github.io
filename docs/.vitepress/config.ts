@@ -165,6 +165,7 @@ export default defineConfig({
             { text: 'prettier', link: '/前端基建/prettier', date: '2023-08-11' } as SidebarItem2,
             { text: 'eslint', link: '/前端基建/eslint', date: '2023-08-11' } as SidebarItem2,
             { text: 'CI/CD介绍', link: '/前端基建/ci', date: '2023-08-14' } as SidebarItem2,
+            { text: 'k8s+jenkins入门', link: '/前端基建/devOps/k8s + jenkins部署应用', date: '2023-08-14' } as SidebarItem2,
           ],
         },
       ],
