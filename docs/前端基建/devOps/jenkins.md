@@ -19,7 +19,7 @@ jenkins多用于提交代码后自动构建，并部署代码。它是用java编
 
 ### jenkins安装和启动
 1. 从官网下载war文件，
-2. 运行java -jar jenkins.war不过先要下载配置jdk，然后浏览器打开[http://localhost:8080]，看到jenkins控制台可能需要等几分钟
+2. 运行java -jar jenkins.war不过先要下载配置jdk，然后浏览器打开http://localhost:8080，看到jenkins控制台可能需要等几分钟
 3. 进入浏览器后输入控制台的密码就可以按照步骤新建用户了，进去后可以直接先自动下载默认勾选的一些插件，也可以后续再下载
 
 ### 创建任务并主动构建
