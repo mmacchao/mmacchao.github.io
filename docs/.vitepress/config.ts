@@ -32,6 +32,8 @@ export default defineConfig({
           { text: '日常开发', link: '/daily/内存优化/memory', activeMatch: '/daily/' },
           { text: '浏览器相关', link: '/浏览器相关/cache', activeMatch: '/浏览器相关/' },
           { text: 'flutter', link: '/flutter/start', activeMatch: '/flutter/' },
+          { text: '计算机网络', link: '/internet/start', activeMatch: '/internet/' },
+          { text: '生活琐碎', link: '/life/start', activeMatch: '/life/' },
         ],
       },
     ],

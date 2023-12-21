@@ -99,7 +99,7 @@ spec:
   template:
     metadata:
       labels:
-        app: nginx
+        app: nginx # 定义key: value，service中也可以配置相同的selector来匹配pod
     spec:
       containers:
       - name: nginx
@@ -118,14 +118,25 @@ spec:
     app: nginx
   ports:
   - protocol: TCP
-    port: 80
-    targetPort: 80
-    nodePort: 30080
+    port: 80 # 内网端口
+    targetPort: 80 # pod暴露的端口
+    nodePort: 30080 # 外网端口，service设置为NodePort类型时设置生效，也可以不设置系统自动分配
   type: NodePort
 ```
 
+## ingress入门
+
+[在 Minikube 环境中使用 NGINX Ingress 控制器配置 Ingress](https://kubernetes.io/zh-cn/docs/tasks/access-application-cluster/ingress-minikube/)
+
+[Kubernetes服務發現之Ingress](https://tw511.com/a/01/9803.html)
+
+ingress用于在service上再抽象一层，避免所有的service都去暴露端口，不便管理
+
+## configMap入门
+
+[K8S ConfigMap使用](https://zhuanlan.zhihu.com/p/109111916)
+
 ## todo
-了解KubeSphere
 学习k8s配置文件
 
 
