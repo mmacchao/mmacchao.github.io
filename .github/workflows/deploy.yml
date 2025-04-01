@@ -14,11 +14,11 @@ jobs: # 一些列的jobs
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps: # deploy这个job对应的一系列运行步骤
-      - uses: actions/checkout@v3 # 使用官方提供的action, 拉取代码
+      - uses: actions/checkout@v4 # 使用官方提供的action, 拉取代码
         name: checkout
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v3 # 官方action，安装node
+      - uses: actions/setup-node@v4 # 官方action，安装node
         name: install node.js
         with:
           node-version: 16
@@ -33,7 +33,7 @@ jobs: # 一些列的jobs
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v3 # 官方action，用于缓存依赖
+      - uses: actions/cache@v4 # 官方action，用于缓存依赖
         name: Setup pnpm cache
         with:
           path: ${{ env.STORE_PATH }}
@@ -45,8 +45,8 @@ jobs: # 一些列的jobs
         run: pnpm install
       - name: Build # 手动写脚本，执行构建命令
         run: pnpm build
-      - uses: actions/configure-pages@v2 # 官方action
-      - uses: actions/upload-pages-artifact@v1 # 官方action，上传文件
+      - uses: actions/configure-pages@v3 # 官方action
+      - uses: actions/upload-pages-artifact@v2 # 官方action，上传文件
         with:
           path: docs/.vitepress/dist
       - name: Deploy # 官方action，部署到指定服务器
