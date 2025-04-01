@@ -136,7 +136,7 @@ const list = computed(() => {
   let list
   if (sortType.value === SORT_TYPE.nav) list = nav
   else if (sortType.value === SORT_TYPE.createTime) {
-    list = flatNav.value.toSorted((a, b) => {
+    list = flatNav.value.sort((a, b) => {
       if (sortDirection.value === SORT_DIRECTION.ascend) {
         return a.createTime > b.createTime ? 1 : -1;
       } else {
@@ -145,7 +145,7 @@ const list = computed(() => {
 
     })
   } else if (sortType.value === SORT_TYPE.updateTime) {
-    list = flatNav.value.toSorted((a, b) => {
+    list = flatNav.value.sort((a, b) => {
       if (sortDirection.value === SORT_DIRECTION.ascend) {
         return a.updateTime > b.updateTime ? 1 : -1;
       } else {
