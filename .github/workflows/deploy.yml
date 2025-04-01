@@ -46,7 +46,7 @@ jobs: # 一些列的jobs
       - name: Build # 手动写脚本，执行构建命令
         run: pnpm build
       - uses: actions/configure-pages@v4 # 官方action
-      - uses: actions/upload-pages-artifact@v4 # 官方action，上传文件
+      - uses: actions/upload-pages-artifact@v1 # 官方action，上传文件
         with:
           path: docs/.vitepress/dist
       - name: Deploy # 官方action，部署到指定服务器
