@@ -38,7 +38,7 @@ vitepress不支持脚注
 *output*
 
 掘金网站上的效果图
-![](../assets/掘金的脚注效果图.png)
+![](./img/掘金的脚注效果图.png)
 
 ## 标题编号
 *input*
@@ -47,7 +47,7 @@ vitepress不支持脚注
 ```
 *output*
 ### 我是可以设置id的标题 {#custom-id}
-![](../assets/标题编号.png)
+![](./img/标题编号.png)
 
 ## 定义列表
 *input*
