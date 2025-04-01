@@ -4,18 +4,20 @@ aside: false
 
 <script setup lang="ts">
 import {useData, UserConfig, useRouter, VitePressData} from 'vitepress';
-import {DefaultTheme} from "vitepress";
+import {type DefaultTheme} from "vitepress";
 import {computed, ref} from 'vue';
+import './assets/iconfont/iconfont.css'
+
+// 遍历目录获取所有页面的创建时间
 import {data as allPageData} from './.vitepress/pages.data'
-
-
-console.log(22, allPageData)
 
 const data: VitePressData = useData()
 // 顶部导航
-let originNav: DefaultTheme.NavItem[] = data.theme.value.nav
-console.log(data, useRouter())
-let nav = []
+let originNav: DefaultTheme.NavItem[] = JSON.parse(JSON.stringify(data.theme.value.nav.slice(1)))
+// console.log(data, useRouter())
+
+let nav: DefaultTheme.NavItem[] = []
+// 拍平nav
 originNav.forEach(item => {
   if (item.items?.length) {
     nav = nav.concat(item.items)
@@ -27,21 +29,37 @@ originNav.forEach(item => {
 const SORT_TYPE = {
   createTime: 'createTime',
   nav: 'nav',
-  update: 'updateTime',
+  updateTime: 'updateTime',
 }
 
 const SORT_TYPES = [
   {value: SORT_TYPE.createTime, label: '创建时间'},
   {value: SORT_TYPE.nav, label: '导航'},
-  {value: SORT_TYPE.update, label: '更新时间'},
+  {value: SORT_TYPE.updateTime, label: '更新时间'},
 ]
-let sortType = ref(SORT_TYPE.nav)
+const SORT_DIRECTION = {
+  ascend: 'ascend',
+  descend: 'descend',
+}
+const SORT_DIRECTION_NAME = {
+  [SORT_DIRECTION.ascend]: '升序',
+  [SORT_DIRECTION.descend]: '降序',
+}
+let sortType = ref(SORT_TYPE.updateTime)
+let sortDirection = ref(SORT_DIRECTION.descend) // ascend descend
 
 // 具体路径的侧边目录
-const sidebar: DefaultTheme.Sidebar = data.theme.value.sidebar
+const sidebar: DefaultTheme.Sidebar = ref(JSON.parse(JSON.stringify(data.theme.value.sidebar)))
+Object.values(sidebar.value).flat().forEach(item => {
+  const gitInfo = allPageData.find(page => page.filePath.includes(item.link))
+  if (gitInfo) {
+    Object.assign(item, gitInfo)
+  }
+})
+console.log(11, sidebar.value)
 
 // 古早写在第三方网址的文章
-const staticLinks = [
+const staticLinks: (DefaultTheme.NavItem & { date?: String })[] = [
   {text: '记录一次vue2项目升级vue3项目的过程', link: 'https://juejin.cn/post/7246940748167643196', date: '2023-06-21'},
   {text: 'mini-vue学习笔记', link: 'https://juejin.cn/post/7243680440694865980', date: '2023-06-12'},
   {text: '数据库学习笔记', link: 'https://juejin.cn/post/7238445305582190653', date: '2023-05-29'},
@@ -85,17 +103,61 @@ const staticLinks = [
   return item
 })
 
-console.log(nav)
+// console.log(nav)
 
 nav = nav.concat(staticLinks)
 
-const list = computed(() => {
-  if (sortType.value === SORT_TYPE.nav) return nav
-  if(sortType.value === SORT_TYPE.createTime) {
-    let arr = []
-    
+const flatNav = ref(flat(nav, []))
+// 更新创建时间和更新时间
+flatNav.value.forEach(item => {
+  const gitInfo = allPageData.find(page => page.filePath.includes(item.link))
+  if (gitInfo) {
+    Object.assign(item, gitInfo)
   }
-  return []
+})
+console.log(flatNav, nav)
+
+function flat(nav, target) {
+  nav.forEach(item => {
+    if (item.items?.length) {
+      flat(item.items, target)
+    } else {
+      const sidebars = getSidebarItems(item, sidebar.value)
+      sidebars?.length ? target.push(...sidebars.map(subItem => ({
+        ...subItem,
+        text: `${item.text} - ${subItem.text}`
+      }))) : target.push(item)
+    }
+  })
+  return target
+}
+
+const list = computed(() => {
+  let list
+  if (sortType.value === SORT_TYPE.nav) list = nav
+  else if (sortType.value === SORT_TYPE.createTime) {
+    list = flatNav.value.toSorted((a, b) => {
+      if (sortDirection.value === SORT_DIRECTION.ascend) {
+        return a.createTime > b.createTime ? 1 : -1;
+      } else {
+        return a.createTime > b.createTime ? -1 : 1;
+      }
+
+    })
+  } else if (sortType.value === SORT_TYPE.updateTime) {
+    list = flatNav.value.toSorted((a, b) => {
+      if (sortDirection.value === SORT_DIRECTION.ascend) {
+        return a.updateTime > b.updateTime ? 1 : -1;
+      } else {
+        return a.updateTime > b.updateTime ? -1 : 1;
+      }
+
+    })
+  } else {
+    list = []
+  }
+  console.log('list change', list)
+  return list
 })
 
 function getLinkTarget(link) {
@@ -115,6 +177,11 @@ function toggleSort() {
     idx = 0
   }
   sortType.value = SORT_TYPES[idx].value
+  sortDirection.value = SORT_DIRECTION.descend
+}
+
+function toggleSortDirect() {
+  sortDirection.value = sortDirection.value === SORT_DIRECTION.ascend ? SORT_DIRECTION.descend : SORT_DIRECTION.ascend
 }
 
 
@@ -122,19 +189,26 @@ function toggleSort() {
 
 # 所有文章
 <div style="text-align: right;">
-  <button :class="$style.btn" @click="toggleSort">切换排序方式</button>
-  ：{{ SORT_TYPE[sortType]}}
+  <div :class="$style['btn-group']">
+    <button v-if="[SORT_TYPE.createTime, SORT_TYPE.updateTime].includes(sortType)" title="切换升降序" :class="$style.btn"
+            @click="toggleSortDirect"> <i class="iconfont icon-paixu"></i>
+    </button>
+    <button :class="$style.btn" @click="toggleSort" title="切换排序方式">
+      {{ SORT_TYPES.find(item => item.value === sortType).label }}
+    </button>
+  </div>
+ 
 </div>
 <ul>
   <li v-for="nav in list">
     <div :class="$style.li">
       <a :href="nav.link" :target="getLinkTarget(nav.link)">{{nav.text}}</a>
-      {{nav.date}}
+      <span style="margin-right: 10px" title="创建时间">{{nav.createTime}}</span>
     </div>
-    <ul v-if="getSidebarItems(nav, sidebar)?.length > 1">
+    <ul v-if="sortType === SORT_TYPE.nav && getSidebarItems(nav, sidebar)?.length > 1">
       <li v-for="item in getSidebarItems(nav, sidebar)" :class="$style.li">
         <a :href="item.link">{{item.text}}</a>
-        {{item.date}}
+        <span style="margin-right: 10px" title="创建时间">{{item.createTime}}  </span>
       </li>
     </ul>
   </li>
@@ -146,11 +220,20 @@ function toggleSort() {
   justify-content: space-between;
   font-family: '微软雅黑';
 }
+.btn-group {
+  border-radius: 4px;
+  display: flex;
+  justify-content: flex-end;
+  .btn {
+    border-radius: 0;
+  }
+}
 .btn {
   background: #eee;
   border-radius: 4px;
   cursor: pointer;
   padding: 2px 8px;
+  //margin-right: 10px;
   &:hover {
     background: #ddd;
   }

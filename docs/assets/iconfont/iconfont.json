@@ -1,0 +1,16 @@
+{
+  "id": "4877788",
+  "name": "个人博客",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "7423",
+      "name": "排序",
+      "font_class": "paixu",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    }
+  ]
+}
