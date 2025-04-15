@@ -55,13 +55,61 @@
 
 踩坑：启动报错，mapper初始化失败，pom文件中mybatis依赖未全部移除
 
-## 加入nacos，添加动态配置功能
+## 加入nacos，dubbo，添加动态配置功能和注册中心
+- nacos提供了动态配置功能和服务发现功能
+- 下载nocos服务端，以单例模式启动服务端后，打开 http://localhost:8848/nacos 就可以进入控制台
+- 需了解命名空间、group的概念
+- 远程服务访问可以用FeignClient、RestTemplate、Dubbo等
 
-## 加入dubbo和nacos
-- 下载并启动nacos，默认自带数据库Derby，也可以启动时改为连接外部数据库如mysql，但是要提前建好相应的表
-- 
-
-
-## 加入redis
+踩坑：包的版本问题导致nacos和dubbo一起时总是启动失败
 
 ## 加入seata
+- 分布式事务包
+- 下载seata服务端，默认是以file的形式启动的， 修改配置文件registry.conf或者新版本为application.yml文件，改为启用nacos作为服务注册中心
+```yml
+# 部分seata服务端配置
+seata:
+  registry:
+    # support: nacos, eureka, redis, zk, consul, etcd3, sofa
+    type: nacos
+    nacos:
+      server-addr: "127.0.0.1:8848"
+      namespace: ""
+      group: "DEFAULT_GROUP"
+      cluster: ""
+      username: ""
+      password: ""
+  store:
+    # support: file 、 db 、 redis
+    mode: file
+
+  service:
+    vgroup-mapping:
+      my_test_tx_group: default
+```
+
+踩坑：包的版本问题，导致业务服务怎么都找不到seata的服务，spring-cloud-alibaba-dependencies自带了seata的依赖，服务端和客户端版本最好保持一致，最后是直接用spring-cloud-alibaba-dependencies自带的1.3.0版本运行成功的
+
+## 加入redis
+- redis支持string hash list set sortedSet
+- redis的数据库名从0开始，不能修改
+- redis没有用户的概念，可以设置密码
+- 多个项目可以起多个redis服务，不建议通过database区分，因为database并不是完全隔离，另外redis占用内存不多
+
+## lombok
+Lombok 是一个 Java 开发工具库，旨在通过简单的注解简化冗余的样板代码（Boilerplate Code），提升开发效率和代码可维护性。它通过编译时注解处理技术（基于 JSR 269 规范）自动生成代码，无需手动编写重复的 getter、setter、equals 等方法
+- @Data 组合注解 包含 @Getter、@Setter、@ToString、@EqualsAndHashCode 和 @RequiredArgsConstructor
+- @Slf4j/@Log4j2：自动注入日志对象（如 log.info()）
+- lombok需要配合编辑器的lombok插件使用，因为其是编译阶段生成的代码，编辑器在没有插件的情况下会解析不了代码
+
+
+## log4j
+Log4j 是 Apache 软件基金会下的开源 Java 日志框架，旨在为开发者提供灵活、高效的日志记录功能。它通过分级管理日志信息、自定义输出格式和目的地，帮助开发者监控程序运行状态、调试代码并优化系统性能
+
+## 写一个简易的redis 和redis-cli
+- 客户端通过Socket，服务端通过ServiceSocket通信，分别执行一个while循环，循环通过PrintWriter发送数据，BufferedReader读取数据
+
+## 单点登录cas
+- CAS（Central Authentication Service，中央认证服务）认证中心是一种基于单点登录（SSO）协议的身份认证系统，旨在为用户提供统一的身份验证服务，允许用户通过一次登录访问多个相互信任的应用系统
+- 分为服务端和客户端
+- 类似的系统有OAuth 2.0，SAML
