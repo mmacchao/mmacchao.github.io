@@ -1,0 +1,19 @@
+{
+  "name": "@mymono/package1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "dependencies": {
+    "@mymono/base-webpack": "1",
+    "element-ui": "2",
+    "vue": "3",
+    "webpack": "^5.99.5",
+    "webpack-cli": "^6.0.1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
