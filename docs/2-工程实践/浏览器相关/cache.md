@@ -48,4 +48,15 @@ http缓存分为强缓存，协商缓存，启发式缓存
 如果没有Expires和Cache-Control字段，浏览器会自己设置一个强缓存时间
 
 缓存有效期计算公式：**(date - last-modified ) * 10%**，取响应报头中 date 与 last-modified 值之差的百分之十作为缓存时间
+
+## 用户行为对浏览器缓存的影响
+参考: [浏览器缓存看这一篇就够了](https://mp.weixin.qq.com/s?__biz=MzAwOTQ4MzY1Nw==&mid=2247487868&idx=2&sn=6f0586d726cb8f1352b55cd70c8e4089&chksm=9a5cc58f1604c9c5c5b617f074b15b6cdb80d99c15b66ea843099bf406c0c98390e70987f9b5#rd)
+
+- 输入地址访问页面，此时所有缓存策略都适用
+- 普通刷新页面，此时实测chrome135依然是适用所有缓存策略
+- Ctrl + F5，强制缓存和协商缓存都失效，浏览器会直接发起请求，且不带上协商缓存需要的字段，另外cache-controll设为了no-cache
+
+:::tip
+不同浏览器针对用户的行为实现不一样
+:::
   
