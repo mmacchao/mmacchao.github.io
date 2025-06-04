@@ -24,6 +24,8 @@ const vueLifecycle = singleSpaVue({
   },
 })
 
+// export default vueLifecycle
+
 export function bootstrap(props) {
   console.log('app1 bootstrap')
   return vueLifecycle.bootstrap(() => {})
@@ -39,8 +41,8 @@ export function unmount(props) {
   return vueLifecycle.unmount(() => {})
 }
 
-window.app1 = {
-  bootstrap,
-  mount,
-  unmount,
-}
+// window.app1 = {
+//   bootstrap,
+//   mount,
+//   unmount,
+// }

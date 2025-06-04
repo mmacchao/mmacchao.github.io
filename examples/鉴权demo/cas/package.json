@@ -1,0 +1,16 @@
+{
+  "name": "cas-demo",
+  "version": "1.0.0",
+  "description": "CAS单点登录演示系统",
+  "scripts": {
+    "start:cas": "node cas-server/server.js",
+    "start:app-a": "node app-a/server.js",
+    "start:app-b": "node app-b/server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5"
+  }
+}

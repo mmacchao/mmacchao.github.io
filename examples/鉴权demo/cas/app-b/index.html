@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>应用B</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .content {
+        display: none;
+      }
+      .login-btn {
+        padding: 10px 20px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>应用B</h1>
+    <div id="login-section">
+      <button class="login-btn" onclick="login()">登录</button>
+    </div>
+    <div id="content" class="content">
+      <h2>欢迎来到应用B</h2>
+      <p>这是受保护的内容</p>
+      <button onclick="logout()">退出登录</button>
+      <p>你也可以访问 <a href="http://localhost:3001">应用A</a></p>
+    </div>
+
+    <script>
+      // 检查JWT token
+      async function checkAuth() {
+        // const token = getCookie('jwt');
+        // if (token) {
+        try {
+          const response = await fetch('/verify-token', {
+            // headers: { 'Authorization': 'Bearer ' + token }
+          })
+          if (response.ok) {
+            showContent()
+            return
+          }
+        } catch (error) {
+          console.error('Token验证失败:', error)
+        }
+        // }
+
+        // 检查URL中是否有ticket参数
+        const urlParams = new URLSearchParams(window.location.search)
+        const ticket = urlParams.get('ticket')
+        if (ticket) {
+          validateTicket(ticket)
+        } else {
+          showLogin()
+        }
+      }
+
+      // 验证CAS票据
+      async function validateTicket(ticket) {
+        try {
+          const response = await fetch('/validate-ticket', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ticket }),
+          })
+
+          if (response.ok) {
+            // 清除URL中的ticket参数
+            window.history.replaceState({}, document.title, window.location.pathname)
+            showContent()
+          } else {
+            // showLogin();
+            login()
+          }
+        } catch (error) {
+          console.error('票据验证失败:', error)
+          // showLogin();
+          login()
+        }
+      }
+
+      async function login() {
+        const currentUrl = window.location.origin
+        try {
+          // 先尝试通过TGC获取ST票据
+          const response = await fetch('http://localhost:3000/ticket', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ service: currentUrl }),
+          })
+
+          if (response.ok) {
+            const { ticket } = await response.json()
+            // 使用获取到的票据进行验证
+            validateTicket(ticket)
+          } else {
+            // 如果没有TGC或TGC无效，跳转到CAS登录页
+            window.location.href = 'http://localhost:3000?service=' + encodeURIComponent(currentUrl)
+          }
+        } catch (error) {
+          console.error('获取票据失败:', error)
+          window.location.href = 'http://localhost:3000?service=' + encodeURIComponent(currentUrl)
+        }
+      }
+
+      function logout() {
+        document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
+        document.cookie = 'TGC=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
+        showLogin()
+      }
+
+      function showContent() {
+        document.getElementById('login-section').style.display = 'none'
+        document.getElementById('content').style.display = 'block'
+      }
+
+      function showLogin() {
+        document.getElementById('login-section').style.display = 'block'
+        document.getElementById('content').style.display = 'none'
+      }
+
+      function getCookie(name) {
+        const value = `; ${document.cookie}`
+        const parts = value.split(`; ${name}=`)
+        if (parts.length === 2) return parts.pop().split(';').shift()
+      }
+
+      // 页面加载时检查认证状态
+      checkAuth()
+    </script>
+  </body>
+</html>

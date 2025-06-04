@@ -1,0 +1,4 @@
+packages:
+  # add all apps and layout
+  - 'app*'
+  - 'layout'

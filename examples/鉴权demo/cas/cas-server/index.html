@@ -1,0 +1,104 @@
+<!--
+ * @Author: mazhichao mazhichao@jxcc.com
+ * @Date: 2025-05-30 10:33:01
+ * @LastEditors: mazhichao mazhichao@jxcc.com
+ * @LastEditTime: 2025-05-30 14:13:14
+ * @FilePath: \cas\cas-server\index.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CAS登录</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .login-form {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      input {
+        margin: 10px 0;
+        padding: 5px;
+      }
+      button {
+        padding: 5px 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-form">
+      <h2>CAS登录</h2>
+      <input type="text" id="username" placeholder="用户名" /><br />
+      <input type="password" id="password" placeholder="密码" /><br />
+      <button onclick="login()">登录</button>
+    </div>
+    <script>
+      // 页面加载时检查TGC
+      async function checkTGC() {
+        const urlParams = new URLSearchParams(window.location.search)
+        const serviceUrl = urlParams.get('service')
+
+        if (!serviceUrl) return
+
+        try {
+          const response = await fetch('/ticket', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ service: serviceUrl }),
+          })
+
+          if (response.ok) {
+            const data = await response.json()
+            if (data.ticket) {
+              window.location.href = serviceUrl + '?ticket=' + data.ticket
+              return
+            }
+          }
+        } catch (error) {
+          console.error('检查TGC失败:', error)
+        }
+      }
+
+      // 页面加载时执行
+      checkTGC()
+
+      async function login() {
+        const username = document.getElementById('username').value
+        const password = document.getElementById('password').value
+        const urlParams = new URLSearchParams(window.location.search)
+        const serviceUrl = urlParams.get('service')
+
+        try {
+          const response = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password, service: serviceUrl }),
+          })
+
+          const data = await response.json()
+          if (data.ticket) {
+            window.location.href = serviceUrl + '?ticket=' + data.ticket
+          } else {
+            alert('登录失败：' + data.message)
+          }
+        } catch (error) {
+          alert('登录失败：' + error.message)
+        }
+      }
+    </script>
+  </body>
+</html>
