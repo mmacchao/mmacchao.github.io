@@ -5,7 +5,7 @@ import { DefaultTheme, DefaultTheme as DefaultTheme$1, defineConfig, UserConfig 
 import AutoNavPlugin from './vitepress-auto-configure-nav-sidebar-main/src'
 
 const { nav, sidebar } = AutoNavPlugin({
-  ignoreFolders: ['.vitepress', 'assets', 'img', 'work'], // 需要排除的一些目录
+  ignoreFolders: ['.vitepress', 'assets', 'img', 'work', 'life'], // 需要排除的一些目录
   ignoreFiles: ['todo.md', 'article-list.md', 'temp.js', 'temp.md', 'temp'], // 需要排除的一些文件
   dirPrefix: '',
   filePrefix: '',
