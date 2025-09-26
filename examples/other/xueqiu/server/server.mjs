@@ -7,6 +7,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import { models, sequelize } from './db.mjs'
 import { sendWxMessage } from './wx-msg.mjs'
+import dayjs from 'dayjs'
 
 async function insertMessage(data) {
   try {
@@ -67,7 +68,8 @@ app.post('/hook', async (req, res) => {
       }
     }
     if (newItem) {
-      sendWxMessage(newItem.text || newItem.description)
+      const msg = `${(newItem.user?.screen_name || '')} \n ${dayjs(newItem.created_at).format('YYYY-MM-DD HH:mm:ss')} \n ${(newItem.text || newItem.description)} `
+      sendWxMessage( msg )
     }
     res.json({ ok: true })
     return

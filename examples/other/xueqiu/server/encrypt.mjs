@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url'
 // 获取当前文件的目录路径
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-import { config } from './config.mjs'
+// import { config } from './config.mjs'
 
 // 使用 AES-256-CBC 加密
 export function encryptConfig(password, obj, outputFile) {
