@@ -13,7 +13,7 @@
       if (currentUser > userIds.length - 1) {
         currentUser = 0;
       };
-      const url = `https://xueqiu.com/v4/statuses/user_timeline.json?user_id=${userId}&page=1&count=10`;
+      const url = `https://xueqiu.com/v4/statuses/user_timeline.json?user_id=${userId}&page=1&count=2&_=${Date.now()}`;
       const res = await fetch(url, { credentials: 'include' });
       const text = await res.text();
       let data;
