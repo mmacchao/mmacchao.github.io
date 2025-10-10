@@ -1,21 +1,89 @@
 # java入门
 [demo仓库地址 ](https://github.com/mmacchao/java-demo) 
 
+## 准备工作
+- 安装jdk，测试 java --version
+- 安装maven 测试 mvn
+
 ## 纯java项目
 - 新建MyApp.java
 - 编译 javac Myapp.java，生成MyApp.class
 - 运行 java MyApp
 
-## 准备工作
-- 安装jdk，测试 java --version
-- 安装maven 测试 mvn
+打包
+```bash
+# 如果包含主类，需要指定Main-Class属性
+jar cvfe MyJar.jar com.example.MainClass *.class
+
+# 创建可执行Jar包
+# 创建一个清单文件 MANIFEST.MF
+Manifest-Version: 1.0
+Main-Class: com.example.MainClass
+
+jar cvfm MyJar.jar MANIFEST.MF com/example/*.class
+```
+
+
+## 依赖寻找机制 - classpath
+
+classpath 可以通过：
+
+-cp / -classpath 命令行参数指定（优先推荐）。
+```bash
+java -cp out[目录名] a.b.c.MyApp
+
+# 多个classpath用冒号分隔
+java -cp "out:libs/helper.jar" a.b.c.MyApp
+```
+
+环境变量 CLASSPATH（不推荐依赖）。
+
+JAR 的 MANIFEST.MF 中 Class-Path: 条目（当通过 java -jar 运行时生效）。
+
+classpath 中放入目录时：JVM 会把目录当作“根”，从根下按包路径查找 .class 文件。
+
+例：如果 classpath 包含 out，要找 a.b.c.MyApp 就会查 out/a/b/c/MyApp.class。
+
+classpath 也可以包含 jar 文件，JVM 会在 jar 的条目中搜索类。
+
+- classpath不会自动把目录下的jar包加入，需要显示的把jar包加入classpath，maven会自动扫描目录下的jar包加入classpath
+- 搜索类时，如果存在同名类，以classpath中出现的顺序为准
+- jar包本身就是个压缩文件，里面有从根目录开始的类文件
 
 ## 用maven包管理工具创建后端服务
+修改maven本地仓库路径
+```xml
+<!-- 用户级配置：~/.m2/settings.xml（推荐）-->
+<!-- 全局配置：${MAVEN_HOME}/conf/settings.xml-->
+<!--idea可以配置使用哪个配置文件和使用哪个目录作用本地仓库-->
+
+<settings>
+  <!-- 自定义本地仓库路径 -->
+  <localRepository>D:/maven_repo</localRepository>
+</settings>
+```
+
 - 新建pom.xml文件，配置项目名称, 打包类型jar还是war, 配置开发tomcat插件
 - 安装依赖 mvn dependency:resolve
 - 编写servlet类，提供后端接口服务
 - mvn package 打出war包 myapp.war，package前会自动更新依赖
 - war包放入tomcat的webapp目录，执行 tomcat/bin/startup.bat启动tomcat，tomcat会自动解压war包 访问 http://localhost:8080/myapp
+
+## maven项目启动服务
+- idea直接运行spring-boot项目的Application.java
+  - 多模块项目，重新加载所有maven项目时，idea会自动执行install，把依赖模块装入本地仓库
+  - 针对微服务依赖，可以到 项目结构 - 模块 - 具体模块 - 依赖，查看依赖的是仓库里面的jar还是被依赖模块的源码
+- maven插件启动
+  - 需在pom.xml中加入spring-boot-maven-plugin插件
+  - 在moduleA的pom.xml所在目录运行项目 mvn spring-boot:run -D"spring-boot.run.jvmArguments=-Dfile.encoding=UTF-8"
+  - 此方式启动，如果moduleB不在本地仓库，maven会自动先install moduleB，安装jar包到本地仓库
+
+## maven项目打包运行
+- 打包
+  - mvn clean package // 只把本项目打包为jar包
+    - java -Dfile.encoding=UTF-8 -cp classpath列表 -jar moduleA.jar 
+  - mvn clean package spring-boot:repackage  // 把依赖也打进jar包里面 
+    - java -Dfile.encoding=UTF-8 -jar moduleA.jar  // 这种方式jar包内部会维护classpath或由spring-boot运行时动态生成classpath
 
 ## 创建数据库，实现注册登录功能
 - 创建数据库 base
