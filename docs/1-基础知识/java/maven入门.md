@@ -2,14 +2,14 @@
 
 ## maven的包找寻机制 
 
-```
-// 父项目
+```xml
+<!-- 父项目-->
 <modules>
   <module>a-service</module>
   <module>b-service</module>
 </modules>
 
-// b-service依赖a-service
+<!-- b-service依赖a-service-->
 <dependency>
   <groupId>com.example</groupId>
   <artifactId>a-service</artifactId>
@@ -19,7 +19,7 @@
 
 这时构建 mvn package 父项目时，b-service 会直接用到 a-service/target/classes 的编译结果。
 
-如果 a-service 没有在父 POM <modules> 里声明，
+如果 a-service 没有在父 POM \<modules\> 里声明，
 那么 b-service 会去 本地仓库 找 a-service-1.0-SNAPSHOT.jar。
 
 如果本地也没有，就去远程仓库下载
