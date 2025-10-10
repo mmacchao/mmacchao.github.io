@@ -2,7 +2,7 @@
 
 ## maven的包找寻机制 
 
-```maven
+```
 // 父项目
 <modules>
   <module>a-service</module>
