@@ -6,7 +6,7 @@
 ### 切换python全局版本
 python支持手动安装多个版本，根据PATH环境变量中的出现的第一个作为全局生效版本
 
-python本身提供了py命令，查看所有安装版本和切换版本
+python本身提供了py命令，查看所有安装版本和临时指定运行版本
 ```shell
 py -0    # 查看所有可用版本
 py -3.8  # 使用 Python 3.8 运行
@@ -28,3 +28,7 @@ source venv/bin/activate
 python --version
 
 ```
+
+### 退出python
+
+ctrl + z，然后回车 或者执行exit()
