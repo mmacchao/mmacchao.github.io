@@ -108,6 +108,7 @@ classpath 也可以包含 jar 文件，JVM 会在 jar 的条目中搜索类。
 - 传统项目和spring-mvc项目的入口文件都在web.xml，而spring-boot的入口文件在继承了SpringBootServletInitializer的类，一般定义为Application.java
 - spring-boot项目不需要web.xml，因为内部集成了tomcat插件，但是也可以使用外部maven的tomcat插件启动开发模式，此时入口文件还是web.xml，也可用没有web.xml，但是其内部实现机制原因会调用继承了SpringBootServletInitializer的类，实现spring-boot项目的初始化
 - 和spring-mvc比基本就是换了个配置文件，同时内置tomcat
+- spring-boot的入口文件：bootstrap.yml，一般根据部署环境指定配置文件java -jar app.jar --spring.profiles.active=test，这会启用bootstrap.test.yml文件
 
 踩坑：spring-boot项目用maven:tomcat7插件启动失败，idea配置本地tomcat启动没问题，直接运行Application.java也没问题，原因未知，可能是版本问题
 
@@ -128,6 +129,7 @@ classpath 也可以包含 jar 文件，JVM 会在 jar 的条目中搜索类。
 - 下载nocos服务端，以单例模式启动服务端后，打开 http://localhost:8848/nacos 就可以进入控制台
 - 需了解命名空间、group的概念
 - 远程服务访问可以用FeignClient、RestTemplate、Dubbo等
+- 入口文件bootstrap.yml一般只配置nacos地址信息，启动时先读取本地bootstrap.yml，后加载nacos上的配置，后加载的优先级更高
 
 踩坑：包的版本问题导致nacos和dubbo一起时总是启动失败
 
