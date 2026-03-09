@@ -122,6 +122,10 @@ classpath 也可以包含 jar 文件，JVM 会在 jar 的条目中搜索类。
 - 修改mapper文件，改成继承BaseMapper
 - 修改model，添加@TableName("user")注解
 
+:::tip
+跳转mapper需要安装mybatisx插件
+:::
+
 踩坑：启动报错，mapper初始化失败，pom文件中mybatis依赖未全部移除
 
 ## 加入nacos，dubbo，添加动态配置功能和注册中心
