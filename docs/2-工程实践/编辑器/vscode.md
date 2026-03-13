@@ -74,3 +74,12 @@ Ctrl+Shift+P 打开命令面板 搜索Preferences: Open Keyboard Shortcuts (JSON
 ```
 
 ### 最近编辑文件
+
+## 自定义新的编辑器
+
+1. 导入vscode配置
+2. 查看配置的主题Atom One Light是否下载成功，是否生效，也可以使用新编辑器的默认主题
+
+## 修改git的更改组
+
+默认git会把所有未追踪的文件列出来，可以设置"git.untrackedChanges": "hidden", 隐藏未追踪文件或者separate，分组显示

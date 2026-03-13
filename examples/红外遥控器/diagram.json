@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "author": "Gemini Fix",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 0, "left": 0, "attrs": {} },
+    { "type": "wokwi-ir-receiver", "id": "ir1", "top": -100, "left": -100, "attrs": {} },
+    { "type": "wokwi-ir-remote", "id": "remote1", "top": 86.4, "left": 384, "attrs": {} },
+    {
+      "type": "wokwi-led",
+      "id": "ledTx",
+      "top": -176.4,
+      "left": 234.2,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rTx",
+      "top": -140.05,
+      "left": 86.4,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btnSend",
+      "top": -100,
+      "left": 350,
+      "attrs": { "color": "blue" }
+    }
+  ],
+  "connections": [
+    ["uno:GND.1", "ir1:GND", "black", []],
+    ["uno:5V", "ir1:VCC", "red", []],
+    ["uno:11", "ir1:DAT", "blue", []],
+    ["uno:3", "ledTx:A", "orange", []],
+    ["ledTx:C", "rTx:1", "orange", ["v-19.2", "h-114.8"]],
+    ["rTx:2", "uno:GND.2", "black", ["h8.4", "v325.9"]],
+    ["uno:2", "btnSend:2.l", "green", ["v-18.6", "h113.5"]],
+    ["uno:GND.2", "btnSend:1.l", "black", ["h137.7", "v-278.5"]]
+  ],
+  "dependencies": {}
+}
